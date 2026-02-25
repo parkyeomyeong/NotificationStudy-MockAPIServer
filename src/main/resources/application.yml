@@ -1,6 +1,24 @@
 server:
   port: 8081
+  tomcat:
+    threads:
+      max: 200          # Tomcat 최대 쓰레드 수 (부하 테스트 시 조절 대상)
+    max-connections: 8192
+    accept-count: 100   # 대기열 크기
 
 logging:
   level:
     com.notification.mock: DEBUG
+
+# Actuator 설정
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, metrics, prometheus   # 외부 노출할 엔드포인트
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: notification-mock-server    # Grafana에서 식별용 태그
