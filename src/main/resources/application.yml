@@ -1,8 +1,10 @@
 server:
   port: 8081
   tomcat:
-    threads:
-      max: 200          # Tomcat 최대 쓰레드 수 (부하 테스트 시 조절 대상)
+    mbeanregistry:
+      enabled: true     # Tomcat 쓰레드 메트릭을 Prometheus에 노출
+    # threads:
+    #   max: 200          # Tomcat 최대 쓰레드 수 (부하 테스트 시 조절 대상)
     max-connections: 8192
     accept-count: 100   # 대기열 크기
 
