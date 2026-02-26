@@ -89,5 +89,17 @@
 gradlew.bat bootRun
 ```
 
-> `gradle.properties`에 JDK 17 경로가 설정되어 있어, 시스템 기본 Java가 1.8이어도 빌드 및 실행이 가능합니다.  
+> `gradle.properties`에 JDK 17 경로가 설정되어 있어, 시스템 기본 Java가 다른버전 (ex. 1.8)이어도 빌드 및 실행이 가능합니다.  
 > 서버는 **8081 포트**를 사용합니다. 해당 포트를 사용 중인 프로세스가 있다면 종료 후 실행해주세요.
+
+## 모니터링 (Actuator)
+
+부하 테스트 시 서버 상태를 확인하기 위해 Spring Boot Actuator를 적용했습니다.
+
+```bash
+# 서버 상태 확인
+curl http://localhost:8081/actuator/health
+
+# Prometheus 메트릭 조회 (Tomcat 쓰레드, JVM, HTTP 요청 통계 등)
+curl http://localhost:8081/actuator/prometheus
+```
