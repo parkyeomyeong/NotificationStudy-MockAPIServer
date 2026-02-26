@@ -22,5 +22,8 @@ management:
     health:
       show-details: always
   metrics:
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true   # P95/P99 계산을 위한 히스토그램 버킷 활성화
     tags:
       application: notification-mock-server    # Grafana에서 식별용 태그
