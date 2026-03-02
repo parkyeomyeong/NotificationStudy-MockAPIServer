@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  # port: 8081
   tomcat:
     mbeanregistry:
       enabled: true     # Tomcat 쓰레드 메트릭을 Prometheus에 노출
