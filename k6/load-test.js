@@ -2,7 +2,7 @@ import http from 'k6/http';
 import { check } from 'k6';
 
 // 부하 대상 서버 주소 (Mock 서버가 띄워진 PC의 IP로 변경)
-const BASE_URL = 'http://localhost:8081';
+const BASE_URL = 'https://port-0-notificationstudy-mockapiserver-mm8l71fu10b9179d.sel3.cloudtype.app';
 
 export const options = {
     stages: [
