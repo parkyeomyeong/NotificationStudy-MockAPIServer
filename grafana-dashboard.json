@@ -124,8 +124,8 @@
         "title": "JVM Heap 메모리 사용량",
         "type": "timeseries",
         "gridPos": {
-          "x": 0,
-          "y": 16,
+          "x": 12,
+          "y": 32,
           "w": 12,
           "h": 8
         },
@@ -153,8 +153,8 @@
         "title": "현재 동시 연결 수",
         "type": "timeseries",
         "gridPos": {
-          "x": 12,
-          "y": 16,
+          "x": 0,
+          "y": 24,
           "w": 12,
           "h": 8
         },
@@ -181,7 +181,7 @@
         "title": "응답시간 P95 / P99 (초)",
         "type": "timeseries",
         "gridPos": {
-          "x": 0,
+          "x": 12,
           "y": 24,
           "w": 12,
           "h": 8
@@ -210,8 +210,8 @@
         "title": "CPU 사용률 (%)",
         "type": "timeseries",
         "gridPos": {
-          "x": 12,
-          "y": 24,
+          "x": 0,
+          "y": 32,
           "w": 12,
           "h": 8
         },
@@ -232,6 +232,35 @@
               "fillOpacity": 15
             },
             "max": 100
+          }
+        }
+      },
+      {
+        "id": 9,
+        "title": "k6 동시 사용자 (VU)",
+        "type": "timeseries",
+        "gridPos": {
+          "x": 0,
+          "y": 16,
+          "w": 24,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "k6_vus",
+            "legendFormat": "현재 VU"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "fillOpacity": 20,
+              "lineWidth": 2
+            },
+            "color": {
+              "mode": "fixed",
+              "fixedColor": "orange"
+            }
           }
         }
       }
