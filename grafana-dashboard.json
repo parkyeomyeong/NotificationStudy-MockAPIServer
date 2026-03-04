@@ -9,12 +9,79 @@
     },
     "panels": [
       {
+        "id": 9,
+        "title": "k6 동시 사용자 (VU)",
+        "type": "timeseries",
+        "gridPos": {
+          "x": 0,
+          "y": 0,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "k6_vus",
+            "legendFormat": "현재 VU"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "fillOpacity": 20,
+              "lineWidth": 2
+            },
+            "color": {
+              "mode": "fixed",
+              "fixedColor": "orange"
+            }
+          }
+        }
+      },
+      {
+        "id": 10,
+        "title": "k6 클라이언트 측 응답시간 (초)",
+        "description": "k6에서 측정한 응답시간 (대기열 대기 시간 포함)",
+        "type": "timeseries",
+        "gridPos": {
+          "x": 12,
+          "y": 0,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "k6_http_req_duration_avg",
+            "legendFormat": "평균"
+          },
+          {
+            "expr": "k6_http_req_duration_p50",
+            "legendFormat": "P50 (중앙값)"
+          },
+          {
+            "expr": "k6_http_req_duration_p95",
+            "legendFormat": "P95"
+          },
+          {
+            "expr": "k6_http_req_duration_p99",
+            "legendFormat": "P99"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "ms",
+            "custom": {
+              "fillOpacity": 15
+            }
+          }
+        }
+      },
+      {
         "id": 1,
         "title": "초당 처리 완료 (TPS)",
         "type": "timeseries",
         "gridPos": {
           "x": 0,
-          "y": 0,
+          "y": 8,
           "w": 12,
           "h": 8
         },
@@ -35,11 +102,12 @@
       },
       {
         "id": 2,
-        "title": "요청별 평균 응답시간 (초)",
+        "title": "서버 측 평균 응답시간 (초)",
+        "description": "서버에서 쓰레드가 요청을 처리한 시간만 측정 (대기열 대기 시간 미포함)",
         "type": "timeseries",
         "gridPos": {
           "x": 12,
-          "y": 0,
+          "y": 8,
           "w": 12,
           "h": 8
         },
@@ -64,7 +132,7 @@
         "type": "timeseries",
         "gridPos": {
           "x": 0,
-          "y": 8,
+          "y": 16,
           "w": 12,
           "h": 8
         },
@@ -93,17 +161,22 @@
       {
         "id": 4,
         "title": "HTTP 에러율 (%)",
+        "description": "서버 측: 처리한 요청 중 5xx 비율. k6 측: 연결 거부·타임아웃 포함 전체 실패율",
         "type": "timeseries",
         "gridPos": {
           "x": 12,
-          "y": 8,
+          "y": 16,
           "w": 12,
           "h": 8
         },
         "targets": [
           {
             "expr": "sum(rate(http_server_requests_seconds_count{application=\"notification-mock-server\",status=~\"5..\"}[30s])) / sum(rate(http_server_requests_seconds_count{application=\"notification-mock-server\"}[30s])) * 100",
-            "legendFormat": "5xx 에러율"
+            "legendFormat": "서버 측 5xx 에러율"
+          },
+          {
+            "expr": "k6_http_req_failed_rate * 100",
+            "legendFormat": "k6 클라이언트 측 에러율"
           }
         ],
         "fieldConfig": {
@@ -115,35 +188,6 @@
             "color": {
               "mode": "fixed",
               "fixedColor": "red"
-            }
-          }
-        }
-      },
-      {
-        "id": 5,
-        "title": "JVM Heap 메모리 사용량",
-        "type": "timeseries",
-        "gridPos": {
-          "x": 12,
-          "y": 32,
-          "w": 12,
-          "h": 8
-        },
-        "targets": [
-          {
-            "expr": "sum(jvm_memory_used_bytes{application=\"notification-mock-server\",area=\"heap\"})",
-            "legendFormat": "사용 중"
-          },
-          {
-            "expr": "sum(jvm_memory_max_bytes{application=\"notification-mock-server\",area=\"heap\"})",
-            "legendFormat": "최대"
-          }
-        ],
-        "fieldConfig": {
-          "defaults": {
-            "unit": "bytes",
-            "custom": {
-              "fillOpacity": 10
             }
           }
         }
@@ -236,30 +280,30 @@
         }
       },
       {
-        "id": 9,
-        "title": "k6 동시 사용자 (VU)",
+        "id": 5,
+        "title": "JVM Heap 메모리 사용량",
         "type": "timeseries",
         "gridPos": {
-          "x": 0,
-          "y": 16,
-          "w": 24,
+          "x": 12,
+          "y": 32,
+          "w": 12,
           "h": 8
         },
         "targets": [
           {
-            "expr": "k6_vus",
-            "legendFormat": "현재 VU"
+            "expr": "sum(jvm_memory_used_bytes{application=\"notification-mock-server\",area=\"heap\"})",
+            "legendFormat": "사용 중"
+          },
+          {
+            "expr": "sum(jvm_memory_max_bytes{application=\"notification-mock-server\",area=\"heap\"})",
+            "legendFormat": "최대"
           }
         ],
         "fieldConfig": {
           "defaults": {
+            "unit": "bytes",
             "custom": {
-              "fillOpacity": 20,
-              "lineWidth": 2
-            },
-            "color": {
-              "mode": "fixed",
-              "fixedColor": "orange"
+              "fillOpacity": 10
             }
           }
         }
