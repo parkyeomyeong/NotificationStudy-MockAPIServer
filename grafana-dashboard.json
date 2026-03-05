@@ -50,20 +50,24 @@
         },
         "targets": [
           {
-            "expr": "k6_http_req_duration_avg",
-            "legendFormat": "평균"
+            "expr": "avg(k6_http_req_duration_avg)",
+            "legendFormat": "전체 평균"
           },
           {
-            "expr": "k6_http_req_duration_p50",
-            "legendFormat": "P50 (중앙값)"
+            "expr": "avg(k6_http_req_duration_avg{expected_response=\"true\"})",
+            "legendFormat": "성공(2xx) 평균"
           },
           {
-            "expr": "k6_http_req_duration_p95",
-            "legendFormat": "P95"
+            "expr": "avg(k6_http_req_duration_avg{expected_response=\"false\"})",
+            "legendFormat": "실패(5xx) 평균"
           },
           {
-            "expr": "k6_http_req_duration_p99",
-            "legendFormat": "P99"
+            "expr": "avg(k6_http_req_duration_p95)",
+            "legendFormat": "전체 P95"
+          },
+          {
+            "expr": "avg(k6_http_req_duration_p99)",
+            "legendFormat": "전체 P99"
           }
         ],
         "fieldConfig": {
@@ -172,22 +176,22 @@
         "targets": [
           {
             "expr": "sum(rate(http_server_requests_seconds_count{application=\"notification-mock-server\",status=~\"5..\"}[30s])) / sum(rate(http_server_requests_seconds_count{application=\"notification-mock-server\"}[30s])) * 100",
-            "legendFormat": "서버 측 5xx 에러율"
+            "legendFormat": "서버 측 전체 오류율"
           },
           {
-            "expr": "k6_http_req_failed_rate * 100",
-            "legendFormat": "k6 클라이언트 측 에러율"
+            "expr": "sum(rate(k6_http_reqs_total{expected_response=\"false\"}[30s])) / sum(rate(k6_http_reqs_total[30s])) * 100",
+            "legendFormat": "k6 측 전체 오류율"
           }
         ],
         "fieldConfig": {
           "defaults": {
             "unit": "percent",
             "custom": {
-              "fillOpacity": 20
+              "fillOpacity": 10,
+              "lineWidth": 2
             },
             "color": {
-              "mode": "fixed",
-              "fixedColor": "red"
+              "mode": "palette-classic"
             }
           }
         }
